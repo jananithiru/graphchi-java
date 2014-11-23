@@ -2,7 +2,7 @@ package edu.cmu.graphchi.apps;
 
 import edu.cmu.graphchi.*;
 import edu.cmu.graphchi.datablocks.FloatConverter;
-import edu.cmu.graphchi.engine.GraphChiEngine;
+import edu.cmu.graphchi.engine.HypergraphChiEngine;
 import edu.cmu.graphchi.engine.VertexInterval;
 import edu.cmu.graphchi.io.CompressedIO;
 import edu.cmu.graphchi.preprocessing.EdgeProcessor;
@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.TreeSet;
 import java.util.logging.Logger;
 
+// 
 /**
  * Example application: PageRank (http://en.wikipedia.org/wiki/Pagerank)
  * Iteratively computes a pagerank for each vertex by averaging the pageranks
@@ -27,7 +28,7 @@ import java.util.logging.Logger;
 public class HypergraphPagerank implements GraphChiProgram<Float, Float> {
 
     private static Logger logger = ChiLogger.getLogger("pagerank");
-
+    //TODO: Have to change this function for hypergraphs 
     public void update(ChiVertex<Float, Float> vertex, GraphChiContext context)  {
         if (context.getIteration() == 0) {
             /* Initialize on first iteration */
@@ -69,18 +70,20 @@ public class HypergraphPagerank implements GraphChiProgram<Float, Float> {
      * @return
      * @throws IOException
      */
-    protected static FastSharder createHypergraphSharder(String graphName, int numShards) throws IOException {
-        return new FastSharder<Float, List<Float>>(graphName, numShards, new VertexProcessor<Float>() {
+/*    protected static FastSharder createHypergraphSharder(String graphName, int numShards) throws IOException {
+        return new FastSharder<Float,List<Float>>(graphName, numShards, new VertexProcessor<Float>() {
             public Float receiveVertexValue(int vertexId, String token) {
                 return (token == null ? 0.0f : Float.parseFloat(token)); // Change this function to change values to a list 
             }
-        }, new ArrayList <EdgeProcessor><Float>() {
+        }, new EdgeProcessor List<Float>() {
+        	List <Float> edgeList = new ArrayList();
             public Float receiveEdge(int from, int to, String token) {
-                return (token == null ? 0.0f : Float.parseFloat(token)); // Change this function to change values to a list
+                //return (token == null ? 0.0f : Float.parseFloat(token)); // Change this function to change values to a list
+            	return edgeList; 
             }
         }, new FloatConverter(), new FloatConverter());
     }
-
+*/
     /** Hypergraph
      * Initialize the sharder-program
      * @param graphName
@@ -125,7 +128,7 @@ public class HypergraphPagerank implements GraphChiProgram<Float, Float> {
         }
 
         /* Run GraphChi */
-        GraphChiEngine<Float, Float> engine = new GraphChiEngine<Float, Float>(baseFilename, nShards);
+        HypergraphChiEngine<Float, Float> engine = new HypergraphChiEngine<Float, Float>(baseFilename, nShards);
         engine.setEdataConverter(new FloatConverter());
         engine.setVertexDataConverter(new FloatConverter());
         engine.setModifiesInedges(false); // Important optimization

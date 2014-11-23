@@ -3,6 +3,7 @@ package edu.cmu.graphchi.engine;
 import com.yammer.metrics.Metrics;
 import com.yammer.metrics.core.Timer;
 import com.yammer.metrics.core.TimerContext;
+
 import edu.cmu.graphchi.*;
 import edu.cmu.graphchi.datablocks.BytesToValueConverter;
 import edu.cmu.graphchi.datablocks.DataBlockManager;
@@ -383,7 +384,7 @@ public class GraphChiEngine <VertexDataType, EdgeDataType> {
                                 slidingShards.get(execInterval).setOffset(memoryShard.getStreamingOffset(),
                                         memoryShard.getStreamingOffsetVid(), memoryShard.getStreamingOffsetEdgePtr());
                                 nextWindow = new FutureTask<IntervalData>(new AutoLoaderTask(new VertexInterval(nextIntervalSt,
-                                        Math.min(nextIntervalEn, nextIntervalSt + 1 + adjMaxWindow)), execInterval + 1,
+                                       Math.min(nextIntervalEn, nextIntervalSt + 1 + adjMaxWindow)), execInterval + 1,
                                         createMemoryShard(nextIntervalSt, nextIntervalEn, execInterval + 1)));
 
                             }
@@ -1051,5 +1052,6 @@ public class GraphChiEngine <VertexDataType, EdgeDataType> {
     }
 }
 
+@SuppressWarnings("serial")
 class NoEdgesInIntervalException extends Exception {
 }

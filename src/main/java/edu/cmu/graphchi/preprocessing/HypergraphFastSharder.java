@@ -50,7 +50,7 @@ import java.util.zip.DeflaterOutputStream;
  *
  * @author jthiru
  */
-public class HypergraphFastSharder <VertexValueType, List<EdgeValueType> > {
+public class HypergraphFastSharder <VertexValueType, EdgeValueType> {
 
     public enum GraphInputFormat {EDGELIST, ADJACENCY, MATRIXMARKET};
 
