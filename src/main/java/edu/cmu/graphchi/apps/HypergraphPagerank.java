@@ -25,10 +25,56 @@ import java.util.logging.Logger;
  * of in-neighbors pageranks.
  * @author jthiru
  */
-public class HypergraphPagerank implements GraphChiProgram<Float, Float> {
+public class HypergraphPagerank implements HypergraphChiProgram<Float, Float> {
 
     private static Logger logger = ChiLogger.getLogger("pagerank");
-    //TODO: Have to change this function for hypergraphs 
+    
+    public void updateHyperedge(ChiVertex<Float, Float> vertex, GraphChiContext context)  {
+        if (context.getIteration() == 0) {
+            /* Initialize on first iteration */
+            vertex.setValue(1.0f);
+        } else {
+            /* On other iterations, set my value to be the weighted
+               average of my in-coming neighbors pageranks.
+             */
+            float sum = 0.f;
+            for(int i=0; i<vertex.numInEdges(); i++) {
+                sum += vertex.inEdge(i).getValue();
+            }
+            vertex.setValue(0.15f + 0.85f * sum);
+        }
+
+        /* Write my value (divided by my out-degree) to my out-edges so neighbors can read it. */
+        float outValue = vertex.getValue() / vertex.numOutEdges();
+        for(int i=0; i<vertex.numOutEdges(); i++) {
+            vertex.outEdge(i).setValue(outValue);
+        }
+
+    }
+
+    public void updateVertex(ChiVertex<Float, Float> vertex, GraphChiContext context)  {
+        if (context.getIteration() == 0) {
+            /* Initialize on first iteration */
+            vertex.setValue(1.0f);
+        } else {
+            /* On other iterations, set my value to be the weighted
+               average of my in-coming neighbors pageranks.
+             */
+            float sum = 0.f;
+            for(int i=0; i<vertex.numInEdges(); i++) {
+                sum += vertex.inEdge(i).getValue();
+            }
+            vertex.setValue(0.15f + 0.85f * sum);
+        }
+
+        /* Write my value (divided by my out-degree) to my out-edges so neighbors can read it. */
+        float outValue = vertex.getValue() / vertex.numOutEdges();
+        for(int i=0; i<vertex.numOutEdges(); i++) {
+            vertex.outEdge(i).setValue(outValue);
+        }
+
+    }
+
     public void update(ChiVertex<Float, Float> vertex, GraphChiContext context)  {
         if (context.getIteration() == 0) {
             /* Initialize on first iteration */
@@ -52,7 +98,6 @@ public class HypergraphPagerank implements GraphChiProgram<Float, Float> {
 
     }
 
-
     /**
      * Callbacks (not needed for Pagerank)
      */
@@ -63,27 +108,6 @@ public class HypergraphPagerank implements GraphChiProgram<Float, Float> {
     public void beginSubInterval(GraphChiContext ctx, VertexInterval interval) {}
     public void endSubInterval(GraphChiContext ctx, VertexInterval interval) {}
 
-    /**
-     * Initialize the sharder-program.
-     * @param graphName
-     * @param numShards
-     * @return
-     * @throws IOException
-     */
-/*    protected static FastSharder createHypergraphSharder(String graphName, int numShards) throws IOException {
-        return new FastSharder<Float,List<Float>>(graphName, numShards, new VertexProcessor<Float>() {
-            public Float receiveVertexValue(int vertexId, String token) {
-                return (token == null ? 0.0f : Float.parseFloat(token)); // Change this function to change values to a list 
-            }
-        }, new EdgeProcessor List<Float>() {
-        	List <Float> edgeList = new ArrayList();
-            public Float receiveEdge(int from, int to, String token) {
-                //return (token == null ? 0.0f : Float.parseFloat(token)); // Change this function to change values to a list
-            	return edgeList; 
-            }
-        }, new FloatConverter(), new FloatConverter());
-    }
-*/
     /** Hypergraph
      * Initialize the sharder-program
      * @param graphName

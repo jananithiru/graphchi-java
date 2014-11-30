@@ -24,6 +24,7 @@ import java.util.logging.Logger;
  * of in-neighbors pageranks.
  * @author akyrola
  */
+
 public class Pagerank implements GraphChiProgram<Float, Float> {
 
     private static Logger logger = ChiLogger.getLogger("pagerank");

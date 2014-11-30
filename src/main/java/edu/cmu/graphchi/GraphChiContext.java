@@ -146,6 +146,7 @@ public class GraphChiContext {
         ctx.scheduler = scheduler;
         ctx.curInterval = curInterval;
         ctx.vertexIdTranslate = vertexIdTranslate;
+        
         return ctx;
     }
 

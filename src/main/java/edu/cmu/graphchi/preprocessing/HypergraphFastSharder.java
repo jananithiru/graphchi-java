@@ -20,6 +20,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 import java.util.zip.DeflaterOutputStream;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Arrays;
+import java.util.Hashtable;
 
 /**
  * New version of sharder that requires predefined number of shards
@@ -52,7 +56,7 @@ import java.util.zip.DeflaterOutputStream;
  */
 public class HypergraphFastSharder <VertexValueType, EdgeValueType> {
 
-    public enum GraphInputFormat {EDGELIST, ADJACENCY, MATRIXMARKET};
+    public enum GraphInputFormat {EDGELIST, ADJACENCY, MATRIXMARKET, HYPERGRAPH};
 
     private String baseFilename;
     private int numShards;
@@ -80,7 +84,11 @@ public class HypergraphFastSharder <VertexValueType, EdgeValueType> {
 
 
     private static final Logger logger = ChiLogger.getLogger("fast-sharder");
-
+  
+	public Hashtable<Integer, Boolean> vertexList = new Hashtable<Integer,Boolean>();
+	public Hashtable<Integer, Boolean> hyperedgeList = new Hashtable<Integer,Boolean>();
+	
+    
     /**
      * Constructor
      * @param baseFilename input-file
@@ -714,13 +722,24 @@ public class HypergraphFastSharder <VertexValueType, EdgeValueType> {
                                             len + " != " + tok.length);
                                     break;
                                 }
-                            }
+                            }                            
                             for(int j=2; j < 2 + len; j++) {
                                 int dest = Integer.parseInt(tok[j]);
                                 this.addEdge(vertexId, dest, null);
                             }
-                        } else {
-                            throw new IllegalArgumentException("Please specify graph input format");
+                        } else if (format == GraphInputFormat.HYPERGRAPH) {
+                        	/* Hypergraph format: <vertex> <hyperedge> <value> */
+                        	int vertex = Integer.parseInt(tok[0]);
+                        	int hyperedge = Integer.parseInt(tok[1]);
+                        	populateLookUpLists(vertex,hyperedge);
+                        	if (tok.length == 2) {
+                        		this.addEdge(vertex, hyperedge, null);
+                        	} else if (tok.length == 3) {
+                        		this.addEdge(vertex, hyperedge, tok[2]);
+                        	}
+                        }
+                        else {
+                        	throw new IllegalArgumentException("Please specify graph input format");
                         }
                     }
                 }
@@ -788,6 +807,9 @@ public class HypergraphFastSharder <VertexValueType, EdgeValueType> {
         }
         else if (format.equals("adjlist") || format.startsWith("adjacency")) {
             shard(inputStream, GraphInputFormat.ADJACENCY);
+        }
+        else if (format.equals("hypergraph")) {
+        	shard(inputStream, GraphInputFormat.HYPERGRAPH);
         }
     }
 
@@ -885,6 +907,18 @@ public class HypergraphFastSharder <VertexValueType, EdgeValueType> {
         },
                 new IntConverter(), new IntConverter());
         sharder.shard(new FileInputStream(fileName), conversion);
-
+     //  sharder.printLookUpLists();
+    }
+ 
+    public void populateLookUpLists(int vertex, int hyperedge) {
+    	vertexList.put(Integer.valueOf(vertex),Boolean.valueOf(true));
+    	hyperedgeList.put(Integer.valueOf(hyperedge),Boolean.valueOf(true));
+    }
+    
+    public void printLookUpLists() {
+    	System.out.println("--------------Vertices--------------");
+    	System.out.println(vertexList);
+    	System.out.println("--------------Hyperedges--------------");
+    	System.out.println(hyperedgeList);
     }
 }

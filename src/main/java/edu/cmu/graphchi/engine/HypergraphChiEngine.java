@@ -3,22 +3,28 @@ package edu.cmu.graphchi.engine;
 import com.yammer.metrics.Metrics;
 import com.yammer.metrics.core.Timer;
 import com.yammer.metrics.core.TimerContext;
+
 import edu.cmu.graphchi.*;
 import edu.cmu.graphchi.datablocks.BytesToValueConverter;
 import edu.cmu.graphchi.datablocks.DataBlockManager;
+import edu.cmu.graphchi.datablocks.IntConverter;
 import edu.cmu.graphchi.engine.auxdata.DegreeData;
 import edu.cmu.graphchi.engine.auxdata.VertexData;
 import edu.cmu.graphchi.engine.auxdata.VertexDegree;
 import edu.cmu.graphchi.hadoop.PigGraphChiBase;
+import edu.cmu.graphchi.preprocessing.EdgeProcessor;
 import edu.cmu.graphchi.preprocessing.VertexIdTranslate;
 import edu.cmu.graphchi.shards.MemoryShard;
 import edu.cmu.graphchi.shards.SlidingShard;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
+
+import edu.cmu.graphchi.preprocessing.HypergraphFastSharder;
 
 /**
  * Copyright [2012] [Aapo Kyrola, Guy Blelloch, Carlos Guestrin / Carnegie Mellon University]
@@ -93,6 +99,10 @@ public class HypergraphChiEngine <VertexDataType, EdgeDataType> {
     private boolean disableInEdges = false, disableOutEdges = false;
 
 
+    // HYPERGRAPH METADATA  
+	private Hashtable<Integer, Boolean> vertexList = new Hashtable<Integer,Boolean>();
+	private Hashtable<Integer, Boolean> hyperedgeList = new Hashtable<Integer,Boolean>();
+	
     /**
      * Constructor
      * @param baseFilename input-file name
@@ -120,6 +130,9 @@ public class HypergraphChiEngine <VertexDataType, EdgeDataType> {
             throw new IllegalArgumentException("Java Virtual Machine has only " + memBudget + "bytes maximum memory." +
                     " Please run the JVM with at least 256 megabytes of memory using -Xmx256m. For better performance, use higher value");
 
+     // HYPERGPAPH Initialization
+        
+        initializeHypergraphShards(baseFilename, nShards);
     }
 
     /**
@@ -169,7 +182,34 @@ public class HypergraphChiEngine <VertexDataType, EdgeDataType> {
         return 1 + intervals.get(intervals.size() - 1).getLastVertex();
     }
 
-    // TODO: Change this code for hypergraphs to initialize hyperedges etc. Need to think over design 
+    /**
+     * For definition of "hypergraphs" 
+     * @throws IOException
+     */
+    
+    // HYPERGRAPH Change this code for hypergraphs to initialize hyperedges etc. Need to think over design
+    protected void initializeHypergraphShards(String baseFilename, int numShards) throws IOException {
+    	
+    	final String metaFilename = "myexamples/metadata.dat";
+    	HypergraphFastSharder<Integer, Integer> sharder = new HypergraphFastSharder<Integer, Integer>(metaFilename, numShards, null, new EdgeProcessor<Integer>() {
+            @Override
+            public Integer receiveEdge(int from, int to, String token) {
+                if (token == null) return 0;
+                return Integer.parseInt(token);
+            }
+        },
+                new IntConverter(), new IntConverter());
+        
+    	sharder.shard(new FileInputStream(metaFilename), "hypergraph");
+         
+        vertexList = sharder.vertexList;
+        hyperedgeList = sharder.hyperedgeList;
+        
+        sharder.printLookUpLists();
+    }
+
+    
+    
     /**
      * For definition of "sliding shards", see http://code.google.com/p/graphchi/wiki/IntroductionToGraphChi
      * @throws IOException
@@ -190,6 +230,8 @@ public class HypergraphChiEngine <VertexDataType, EdgeDataType> {
 
         }
     }
+    
+    
 
     /**
      * For definition of "memory shards", see http://code.google.com/p/graphchi/wiki/IntroductionToGraphChi
@@ -218,7 +260,7 @@ public class HypergraphChiEngine <VertexDataType, EdgeDataType> {
      * @param niters number of iterations
      * @throws IOException
      */
-    public void run(GraphChiProgram<VertexDataType, EdgeDataType> program, int niters) throws IOException {
+    public void run(HypergraphChiProgram<VertexDataType, EdgeDataType> program, int niters) throws IOException {
 
         if (!hasSetEdgeDataConverter) {
             throw new IllegalStateException("You need to call setEdataConverter() prior to calling run()!");
@@ -468,7 +510,7 @@ public class HypergraphChiEngine <VertexDataType, EdgeDataType> {
         scheduler = new BitsetScheduler(numVertices());
     }
 
-    private void execUpdates(final GraphChiProgram<VertexDataType, EdgeDataType> program,
+    private void execUpdates(final HypergraphChiProgram<VertexDataType, EdgeDataType> program,
                              final ChiVertex<VertexDataType, EdgeDataType>[] vertices) {
         if (vertices == null || vertices.length == 0) return;
         TimerContext _timer = executionTimer.time();
@@ -477,7 +519,8 @@ public class HypergraphChiEngine <VertexDataType, EdgeDataType> {
             for(ChiVertex<VertexDataType, EdgeDataType> vertex : vertices) {
                 if (vertex != null) {
                     nupdates++;
-                    program.update(vertex, chiContext);
+                    hypergraphUpdate(program, vertex, chiContext);
+                    // program.update(vertex, chiContext);
                 }
             }
         } else {
@@ -501,11 +544,13 @@ public class HypergraphChiEngine <VertexDataType, EdgeDataType> {
                 public void run() {
                     int thrupdates = 0;
                     GraphChiContext threadContext = chiContext.clone(0);
+                    
                     try {
                         for(ChiVertex<VertexDataType, EdgeDataType> vertex : vertices) {
                             if (vertex != null && !vertex.parallelSafe) {
                                 thrupdates++;
-                                program.update(vertex, threadContext);
+                                hypergraphUpdate(program, vertex, threadContext);
+                                //program.update(vertex, threadContext);
                             }
                         }
 
@@ -543,7 +588,8 @@ public class HypergraphChiEngine <VertexDataType, EdgeDataType> {
                                 ChiVertex<VertexDataType, EdgeDataType> vertex = vertices[i];
                                 if (vertex != null && vertex.parallelSafe) {
                                     thrupdates++;
-                                    program.update(vertex, threadContext);
+                                    hypergraphUpdate(program, vertex, threadContext);
+                                    //program.update(vertex, threadContext);
                                 }
                             }
 
@@ -577,6 +623,22 @@ public class HypergraphChiEngine <VertexDataType, EdgeDataType> {
         _timer.stop();
     }
 
+    // HYPERGRAPH 
+    protected void hypergraphUpdate(HypergraphChiProgram<VertexDataType, EdgeDataType> program, ChiVertex<VertexDataType, EdgeDataType>vertex,GraphChiContext threadContext)
+    {
+    	int counter = 0 ; 
+    	if (vertexList.containsKey(vertex.getId()))
+    	{
+    		 System.out.println("Counter: "+counter+"VertexId: "+vertex.getId());
+    		 program.updateVertex(vertex, threadContext);
+    	}
+    	else 
+    	{ 
+    		System.out.println("Counter: "+counter+"Should be hyperedge ");
+    		program.updateHyperedge(vertex, threadContext);
+    	}
+    }
+    
     protected int initVertices(int nvertices, int firstVertexId, ChiVertex<VertexDataType, EdgeDataType>[] vertices) throws IOException
     {
         final TimerContext _timer = initVerticesTimer.time();
