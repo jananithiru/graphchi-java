@@ -190,7 +190,7 @@ public class HypergraphChiEngine <VertexDataType, EdgeDataType> {
     // HYPERGRAPH Change this code for hypergraphs to initialize hyperedges etc. Need to think over design
     protected void initializeHypergraphShards(String baseFilename, int numShards) throws IOException {
     	
-    	final String metaFilename = "myexamples/metadata.dat";
+    	final String metaFilename = "myexamples/metadata2.dat";
     	HypergraphFastSharder<Integer, Integer> sharder = new HypergraphFastSharder<Integer, Integer>(metaFilename, numShards, null, new EdgeProcessor<Integer>() {
             @Override
             public Integer receiveEdge(int from, int to, String token) {
@@ -627,15 +627,20 @@ public class HypergraphChiEngine <VertexDataType, EdgeDataType> {
     protected void hypergraphUpdate(HypergraphChiProgram<VertexDataType, EdgeDataType> program, ChiVertex<VertexDataType, EdgeDataType>vertex,GraphChiContext threadContext)
     {
     	int counter = 0 ; 
-    	if (vertexList.containsKey(vertex.getId()))
+    	//if (vertexList.containsKey(vertex.getId()))
+    	ArrayList<Integer> hyperedges = new ArrayList<Integer>();
+    	hyperedges.add(3);
+    	hyperedges.add(8);
+    	
+    	if (hyperedges.contains(vertex.getId()))
     	{
-    		 System.out.println("Counter: "+counter+"VertexId: "+vertex.getId());
-    		 program.updateVertex(vertex, threadContext);
+    		 //System.out.println("Counter: "+counter+"VertexId: "+vertex.getId());
+    		program.updateHyperedge(vertex, threadContext);
     	}
     	else 
     	{ 
-    		System.out.println("Counter: "+counter+"Should be hyperedge ");
-    		program.updateHyperedge(vertex, threadContext);
+    		 program.updateVertex(vertex, threadContext);
+    		//System.out.println("Counter: "+counter+"Should be hyperedge ");
     	}
     }
     
