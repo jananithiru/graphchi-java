@@ -1,0 +1,37 @@
+We need to be able to identify hyperedges. 
+
+So we store two lists when we do preprocessing. 
+
+One list contains vertices ids
+the other list contains hyperedges ids
+
+
+
+
+Create another type of input parameter similar to edjlist and then do the checks 
+
+e.g .
+
+myexamples/test2PageRank.dat 2 edgelist
+
+myexamples/test2PageRank.dat 2 adjlist 
+
+myexamples/test2PageRank.dat 2 hyperedges
+
+
+
+
+
+hyperedges and verteices cant share the same id 
+
+We need to explicitly understand that a hyperedge is a vertex 
+
+Graphchi assumes missing vertices and sets them to 0. 
+
+
+
+
+Synchronisation issues
+
+Graphchi puts up dummy vertices etc etc 
+

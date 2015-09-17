@@ -1,0 +1,41 @@
+8:44:41 PM pagerank main - t:1 INFO:   Found shards -- no need to preprocess
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+8:44:42 PM engine run - t:1 INFO:   :::::::: Using 4 execution threads :::::::::
+8:44:42 PM vertex-data <init> - t:1 INFO:   Sparse vertex data was allowed but sparse degree file did not exist  using dense
+8:44:42 PM vertex-data <init> - t:1 INFO:   Vertex file [/home/jthiru/graphchi-java/myexamples/preprocessedHypergraph1.dat.4Bj.vout] length: 48, nvertices=12, expected size: 48
+8:44:42 PM engine run - t:1 INFO:   0.004s: iteration: 0, interval: 0 -- 5
+8:44:42 PM engine determineNextWindow - t:1 INFO:   Memory budget: 224133120
+8:44:42 PM engine run - t:1 INFO:   Subinterval:: 0 -- 5 (iteration 0)
+8:44:42 PM engine run - t:1 INFO:   Init vertices...
+8:44:42 PM engine run - t:1 INFO:   Loading...
+8:44:42 PM engine loadBeforeUpdates - t:1 INFO:   Memshard: 0 -- 5
+java.lang.IllegalArgumentException: Buffer size <= 0
+	at java.io.BufferedInputStream.<init>(BufferedInputStream.java:193)
+	at edu.cmu.graphchi.shards.MemoryShard.loadAdj(MemoryShard.java:303)
+	at edu.cmu.graphchi.shards.MemoryShard.loadVertices(MemoryShard.java:134)
+	at edu.cmu.graphchi.engine.GraphChiEngine.loadBeforeUpdates(GraphChiEngine.java:623)
+	at edu.cmu.graphchi.engine.GraphChiEngine.run(GraphChiEngine.java:347)
+	at edu.cmu.graphchi.apps.HypergraphPagerank.main(HypergraphPagerank.java:113)
+8:44:47 PM engine loadBeforeUpdates - t:1 INFO:   Still waiting for loading, counter is: 1
+8:44:52 PM engine loadBeforeUpdates - t:1 INFO:   Still waiting for loading, counter is: 1
+8:44:57 PM engine loadBeforeUpdates - t:1 INFO:   Still waiting for loading, counter is: 1
+8:45:02 PM engine loadBeforeUpdates - t:1 INFO:   Still waiting for loading, counter is: 1
+8:45:07 PM engine loadBeforeUpdates - t:1 INFO:   Still waiting for loading, counter is: 1
+8:45:12 PM engine loadBeforeUpdates - t:1 INFO:   Still waiting for loading, counter is: 1
+8:45:17 PM engine loadBeforeUpdates - t:1 INFO:   Still waiting for loading, counter is: 1
+8:45:22 PM engine loadBeforeUpdates - t:1 INFO:   Still waiting for loading, counter is: 1
+8:45:27 PM engine loadBeforeUpdates - t:1 INFO:   Still waiting for loading, counter is: 1
+8:45:32 PM engine loadBeforeUpdates - t:1 INFO:   Still waiting for loading, counter is: 1
+8:45:37 PM engine loadBeforeUpdates - t:1 INFO:   Still waiting for loading, counter is: 1
+8:45:42 PM engine loadBeforeUpdates - t:1 INFO:   Still waiting for loading, counter is: 1
+8:45:47 PM engine loadBeforeUpdates - t:1 INFO:   Still waiting for loading, counter is: 1
+8:45:52 PM engine loadBeforeUpdates - t:1 INFO:   Still waiting for loading, counter is: 1
+8:45:57 PM engine loadBeforeUpdates - t:1 INFO:   Still waiting for loading, counter is: 1
+8:46:02 PM engine loadBeforeUpdates - t:1 INFO:   Still waiting for loading, counter is: 1
+8:46:07 PM engine loadBeforeUpdates - t:1 INFO:   Still waiting for loading, counter is: 1
+8:46:12 PM engine loadBeforeUpdates - t:1 INFO:   Still waiting for loading, counter is: 1
+8:46:17 PM engine loadBeforeUpdates - t:1 INFO:   Still waiting for loading, counter is: 1
+8:46:22 PM engine loadBeforeUpdates - t:1 INFO:   Still waiting for loading, counter is: 1
+

@@ -1,0 +1,117 @@
+1:33:23 PM pagerank main - t:1 INFO:   Found shards -- no need to preprocess
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+1:33:24 PM engine run - t:1 INFO:   :::::::: Using 4 execution threads :::::::::
+1:33:24 PM vertex-data <init> - t:1 INFO:   Sparse vertex data was allowed but sparse degree file did not exist  using dense
+1:33:24 PM vertex-data <init> - t:1 INFO:   Vertex file [/home/jthiru/graphchi-java/myexamples/testPageRank.dat.4Bj.vout] length: 304, nvertices=76, expected size: 304
+1:33:24 PM engine run - t:1 INFO:   0.004s: iteration: 0, interval: 0 -- 37
+1:33:24 PM engine determineNextWindow - t:1 INFO:   Memory budget: 224133120
+1:33:24 PM engine run - t:1 INFO:   Subinterval:: 0 -- 37 (iteration 0)
+1:33:24 PM engine run - t:1 INFO:   Init vertices...
+1:33:24 PM engine run - t:1 INFO:   Loading...
+1:33:24 PM engine loadBeforeUpdates - t:1 INFO:   Memshard: 0 -- 37
+1:33:24 PM engine loadBeforeUpdates - t:1 INFO:   Loading memory-shard finished.main
+1:33:24 PM engine run - t:1 INFO:   Load took: 6ms
+1:33:24 PM engine run - t:1 INFO:   Update exec: 9 ms.
+1:33:24 PM engine run - t:1 INFO:   0.033s: iteration: 0, interval: 38 -- 75
+1:33:24 PM engine load - t:1 INFO:   Error: Tried to read past file: 304 --- 608
+1:33:24 PM engine determineNextWindow - t:1 INFO:   Memory budget: 224133120
+1:33:24 PM engine run - t:1 INFO:   Subinterval:: 38 -- 75 (iteration 0)
+1:33:24 PM engine run - t:1 INFO:   Init vertices...
+1:33:24 PM vertex-data releaseAndCommit - t:12 INFO:   Vertex data write: 0 -- 152
+1:33:24 PM engine run - t:1 INFO:   Loading...
+1:33:24 PM engine loadBeforeUpdates - t:1 INFO:   Memshard: 38 -- 75
+1:33:24 PM engine loadBeforeUpdates - t:1 INFO:   Loading memory-shard finished.main
+1:33:24 PM engine run - t:1 INFO:   Load took: 7ms
+1:33:24 PM engine run - t:1 INFO:   Update exec: 1 ms.
+1:33:24 PM vertex-data releaseAndCommit - t:16 INFO:   Vertex data write: 152 -- 304
+1:33:24 PM engine run - t:1 INFO:   0.096s: iteration: 1, interval: 0 -- 37
+1:33:24 PM engine determineNextWindow - t:1 INFO:   Memory budget: 224133120
+1:33:24 PM engine run - t:1 INFO:   Subinterval:: 0 -- 37 (iteration 1)
+1:33:24 PM engine run - t:1 INFO:   Init vertices...
+1:33:24 PM engine run - t:1 INFO:   Loading...
+1:33:24 PM engine loadBeforeUpdates - t:1 INFO:   Memshard: 0 -- 37
+1:33:24 PM engine loadBeforeUpdates - t:1 INFO:   Loading memory-shard finished.main
+1:33:24 PM engine run - t:1 INFO:   Load took: 2ms
+1:33:24 PM engine run - t:1 INFO:   Update exec: 1 ms.
+1:33:24 PM engine run - t:1 INFO:   0.1s: iteration: 1, interval: 38 -- 75
+1:33:24 PM engine load - t:1 INFO:   Error: Tried to read past file: 304 --- 608
+1:33:24 PM engine determineNextWindow - t:1 INFO:   Memory budget: 224133120
+1:33:24 PM engine run - t:1 INFO:   Subinterval:: 38 -- 75 (iteration 1)
+1:33:24 PM engine run - t:1 INFO:   Init vertices...
+1:33:24 PM vertex-data releaseAndCommit - t:14 INFO:   Vertex data write: 0 -- 152
+1:33:24 PM engine run - t:1 INFO:   Loading...
+1:33:24 PM engine loadBeforeUpdates - t:1 INFO:   Memshard: 38 -- 75
+1:33:24 PM engine loadBeforeUpdates - t:1 INFO:   Loading memory-shard finished.main
+1:33:24 PM engine run - t:1 INFO:   Load took: 2ms
+1:33:24 PM engine run - t:1 INFO:   Update exec: 1 ms.
+1:33:24 PM engine run - t:1 INFO:   0.106s: iteration: 2, interval: 0 -- 37
+1:33:24 PM engine determineNextWindow - t:1 INFO:   Memory budget: 224133120
+1:33:24 PM engine run - t:1 INFO:   Subinterval:: 0 -- 37 (iteration 2)
+1:33:24 PM engine run - t:1 INFO:   Init vertices...
+1:33:24 PM vertex-data releaseAndCommit - t:16 INFO:   Vertex data write: 152 -- 304
+1:33:24 PM engine run - t:1 INFO:   Loading...
+1:33:24 PM engine loadBeforeUpdates - t:1 INFO:   Memshard: 0 -- 37
+1:33:24 PM engine loadBeforeUpdates - t:1 INFO:   Loading memory-shard finished.main
+1:33:24 PM engine run - t:1 INFO:   Load took: 2ms
+1:33:24 PM engine run - t:1 INFO:   Update exec: 2 ms.
+1:33:24 PM engine run - t:1 INFO:   0.112s: iteration: 2, interval: 38 -- 75
+1:33:24 PM engine load - t:1 INFO:   Error: Tried to read past file: 304 --- 608
+1:33:24 PM engine determineNextWindow - t:1 INFO:   Memory budget: 224133120
+1:33:24 PM engine run - t:1 INFO:   Subinterval:: 38 -- 75 (iteration 2)
+1:33:24 PM engine run - t:1 INFO:   Init vertices...
+1:33:24 PM vertex-data releaseAndCommit - t:15 INFO:   Vertex data write: 0 -- 152
+1:33:24 PM engine run - t:1 INFO:   Loading...
+1:33:24 PM engine loadBeforeUpdates - t:1 INFO:   Memshard: 38 -- 75
+1:33:24 PM engine loadBeforeUpdates - t:1 INFO:   Loading memory-shard finished.main
+1:33:24 PM engine run - t:1 INFO:   Load took: 2ms
+1:33:24 PM engine run - t:1 INFO:   Update exec: 2 ms.
+1:33:24 PM engine run - t:1 INFO:   0.12s: iteration: 3, interval: 0 -- 37
+1:33:24 PM engine determineNextWindow - t:1 INFO:   Memory budget: 224133120
+1:33:24 PM engine run - t:1 INFO:   Subinterval:: 0 -- 37 (iteration 3)
+1:33:24 PM engine run - t:1 INFO:   Init vertices...
+1:33:24 PM vertex-data releaseAndCommit - t:15 INFO:   Vertex data write: 152 -- 304
+1:33:24 PM engine run - t:1 INFO:   Loading...
+1:33:24 PM engine loadBeforeUpdates - t:1 INFO:   Memshard: 0 -- 37
+1:33:24 PM engine loadBeforeUpdates - t:1 INFO:   Loading memory-shard finished.main
+1:33:24 PM engine run - t:1 INFO:   Load took: 3ms
+1:33:24 PM engine run - t:1 INFO:   Update exec: 2 ms.
+1:33:24 PM engine run - t:1 INFO:   0.129s: iteration: 3, interval: 38 -- 75
+1:33:24 PM engine load - t:1 INFO:   Error: Tried to read past file: 304 --- 608
+1:33:24 PM engine determineNextWindow - t:1 INFO:   Memory budget: 224133120
+1:33:24 PM engine run - t:1 INFO:   Subinterval:: 38 -- 75 (iteration 3)
+1:33:24 PM engine run - t:1 INFO:   Init vertices...
+1:33:24 PM vertex-data releaseAndCommit - t:12 INFO:   Vertex data write: 0 -- 152
+1:33:24 PM engine run - t:1 INFO:   Loading...
+1:33:24 PM engine loadBeforeUpdates - t:1 INFO:   Memshard: 38 -- 75
+1:33:24 PM engine loadBeforeUpdates - t:1 INFO:   Loading memory-shard finished.main
+1:33:24 PM engine run - t:1 INFO:   Load took: 13ms
+1:33:24 PM engine run - t:1 INFO:   Update exec: 1 ms.
+1:33:24 PM vertex-data releaseAndCommit - t:16 INFO:   Vertex data write: 152 -- 304
+1:33:24 PM engine run - t:1 INFO:   Engine finished in: 0.154 secs.
+1:33:24 PM engine run - t:1 INFO:   Updates: 304
+1:33:24 PM pagerank main - t:1 INFO:   Ready.
+1:33:24 PM vertex-data <init> - t:1 INFO:   Sparse vertex data was allowed but sparse degree file did not exist  using dense
+1:33:24 PM vertex-data <init> - t:1 INFO:   Vertex file [/home/jthiru/graphchi-java/myexamples/testPageRank.dat.4Bj.vout] length: 304, nvertices=76, expected size: 304
+1: 56 = 0.42553687
+2: 26 = 0.35749152
+3: 31 = 0.28311652
+4: 73 = 0.2817476
+5: 40 = 0.25128928
+6: 55 = 0.25128928
+7: 25 = 0.24544793
+8: 67 = 0.23021635
+9: 21 = 0.22437501
+10: 39 = 0.21954359
+11: 48 = 0.20153126
+12: 30 = 0.181875
+13: 0 = 0.15
+14: 2 = 0.15
+15: 4 = 0.15
+16: 6 = 0.15
+17: 8 = 0.15
+18: 10 = 0.15
+19: 12 = 0.15
+20: 14 = 0.15
+

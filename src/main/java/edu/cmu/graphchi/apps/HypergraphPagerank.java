@@ -23,14 +23,14 @@ import java.util.logging.Logger;
  * Example application: PageRank (http://en.wikipedia.org/wiki/Pagerank)
  * Iteratively computes a pagerank for each vertex by averaging the pageranks
  * of in-neighbors pageranks.
- * @author jthiru
+ * 
  */
 public class HypergraphPagerank implements HypergraphChiProgram<Float, Float> {
 
     private static Logger logger = ChiLogger.getLogger("pagerank");
     
     public void updateHyperedge(ChiVertex<Float, Float> vertex, GraphChiContext context)  {
-    	System.out.println("\n ------------- start Hyperedge ---------------\n");
+    	//System.out.println("\n ------------- start Hyperedge ---------------\n");
         if (context.getIteration() == 0) {
             /* Initialize on first iteration */
             vertex.setValue(0.0f);
@@ -41,22 +41,22 @@ public class HypergraphPagerank implements HypergraphChiProgram<Float, Float> {
             float sum = 0.f;
             for(int i=0; i<vertex.numInEdges(); i++) {
                 sum += vertex.inEdge(i).getValue();
-                System.out.println("\ni "+vertex.inEdge(i).getVertexId()+" inEdge value : "+ vertex.inEdge(i).getValue());
+          //      System.out.println("\ni "+vertex.inEdge(i).getVertexId()+" inEdge value : "+ vertex.inEdge(i).getValue());
                 
             }
             vertex.setValue(0.2f + 0.8f * sum);
             
-            System.out.println("\n----Iteration: "+context.getIteration()+
+            /*System.out.println("\n----Iteration: "+context.getIteration()+
             		" Vertex ID: "+vertex.getId()+
             		" Value : " +vertex.getValue()+"\n"+
-            		" Sum : " +sum+"\n");
+            		" Sum : " +sum+"\n");*/
         }
 
         /* Write my value (divided by my out-degree) to my out-edges so neighbors can read it. */
         
         float outValue = vertex.getValue() / vertex.numOutEdges();
         
-        
+       /* 
         System.out.println("\n----Iteration: "+context.getIteration()+
         		" Out value: "+ outValue+"\t"+
         		" Vertex ID: "+vertex.getId()+
@@ -64,16 +64,16 @@ public class HypergraphPagerank implements HypergraphChiProgram<Float, Float> {
         		" out egdes : " +vertex.numOutEdges()+"\t"+ 
         		" in egdes : " +vertex.numInEdges()+"\n");
         
-        
+        */
         for(int i=0; i<vertex.numOutEdges(); i++) {
             vertex.outEdge(i).setValue(outValue);
         }
-        System.out.println("\n --------------end Hyperedge-------\n");
+        //System.out.println("\n --------------end Hyperedge-------\n");
     }
 
     public void updateVertex(ChiVertex<Float, Float> vertex, GraphChiContext context)  {
     	
-    	System.out.println("\n --------------vertex-------\n");
+    //	System.out.println("\n --------------vertex-------\n");
         
     	if (context.getIteration() == 0) {
             /* Initialize on first iteration */
@@ -91,27 +91,27 @@ public class HypergraphPagerank implements HypergraphChiProgram<Float, Float> {
             
             vertex.setValue(0.2f + 0.80f * sum);
         
-            System.out.println("\n----Iteration: "+context.getIteration()+
+      /*      System.out.println("\n----Iteration: "+context.getIteration()+
             		" Vertex ID: "+vertex.getId()+
             		" Value : " +vertex.getValue()+"\n"+
-            		" Sum : " +sum+"\n");
+            		" Sum : " +sum+"\n");*/
         }
 
         /* Write my value (divided by my out-degree) to my out-edges so neighbors can read it. */
         float outValue = vertex.getValue() / vertex.numOutEdges();
         
-        System.out.println("\n----Iteration: "+context.getIteration()+
+     /*   System.out.println("\n----Iteration: "+context.getIteration()+
         		" Out value: "+ outValue+"\t"+
         		" Vertex ID: "+vertex.getId()+
         		" Vertex Value: "+vertex.getValue()+
         		" out egdes : " +vertex.numOutEdges()+"\t"+ 
-        		" in egdes : " +vertex.numInEdges()+"\n");
+        		" in egdes : " +vertex.numInEdges()+"\n");*/
         
         for(int i=0; i<vertex.numOutEdges(); i++) {
             vertex.outEdge(i).setValue(outValue);
         }
         
-        System.out.println("\n --------------vertex-------\n");
+        //System.out.println("\n --------------vertex-------\n");
     }
 
     public void update(ChiVertex<Float, Float> vertex, GraphChiContext context)  {
@@ -196,7 +196,8 @@ public class HypergraphPagerank implements HypergraphChiProgram<Float, Float> {
         engine.setVertexDataConverter(new FloatConverter());
         engine.setModifiesInedges(false); // Important optimization
 
-        engine.run(new HypergraphPagerank(), 2);
+        // after initializing hyperedges, call this
+        engine.run(new HypergraphPagerank(), 8);
 
         logger.info("Ready.");
 

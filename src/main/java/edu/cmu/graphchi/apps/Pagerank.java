@@ -111,8 +111,13 @@ public class Pagerank implements GraphChiProgram<Float, Float> {
         engine.setVertexDataConverter(new FloatConverter());
         engine.setModifiesInedges(false); // Important optimization
 
+        
+        long startTime = System.currentTimeMillis();
         engine.run(new Pagerank(), 4);
-
+        long endTime = System.currentTimeMillis();
+        
+        System.out.println("elapsedTime="+(endTime-startTime)+"ms");
+        
         logger.info("Ready.");
 
         /* Output results */

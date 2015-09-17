@@ -52,7 +52,7 @@ import java.util.Hashtable;
  *
  * <b>Note:</b>If from and to vertex ids equal (applies only to edge list format), the line is assumed to contain vertex-value.
  *
- * @author jthiru
+ * 
  */
 public class HypergraphFastSharder <VertexValueType, EdgeValueType> {
 
@@ -728,7 +728,7 @@ public class HypergraphFastSharder <VertexValueType, EdgeValueType> {
                                 this.addEdge(vertexId, dest, null);
                             }
                         } else if (format == GraphInputFormat.HYPERGRAPH) {
-                        	/* Hypergraph format: <vertex> <hyperedge> <value> */
+                        	/* Hypergraph format: <vertex> <hyperedge>*/
                         	int vertex = Integer.parseInt(tok[0]);
                         	int hyperedge = Integer.parseInt(tok[1]);
                         	populateLookUpLists(vertex,hyperedge);
